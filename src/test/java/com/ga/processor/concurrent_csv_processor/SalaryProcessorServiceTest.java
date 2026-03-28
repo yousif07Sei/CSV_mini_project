@@ -107,4 +107,25 @@ public class SalaryProcessorServiceTest {
         assertEquals(3, result.getEmployees().get(0).getYear_Of_Service());
     }
 
+    @Test
+    void testConcurrentProcessingReturnsCorrectCount() {
+        List<Employee> employees = java.util.stream.IntStream.range(0, 30)
+                .mapToObj(i -> Employee.builder()
+                        .id((long) i)
+                        .name("Employee " + i)
+                        .current_salary(50000)
+                        .joined_Date(LocalDate.now().minusYears(i % 5))
+                        .role(i % 3 == 0 ? "Director" : i % 3 == 1 ? "Manager" : "Employee")
+                        .project_Completion_Percentage(60 + i)
+                        .build())
+                .toList();
+
+        ProcessingResponse result = service.processEmployees(employees, defaultRequest);
+
+        assertEquals(30, result.getTotalEmployees());
+        assertEquals(30, result.getEmployees().size());
+        assertEquals(result.getRaisedEmployees() + result.getSkippedEmployees(),
+                result.getTotalEmployees());
+    }
+
 }
