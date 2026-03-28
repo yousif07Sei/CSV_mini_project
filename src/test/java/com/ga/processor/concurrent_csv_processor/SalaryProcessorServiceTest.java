@@ -89,4 +89,22 @@ public class SalaryProcessorServiceTest {
         assertEquals(1.0, result.getEmployees().get(0).getTotal_Increase_Percentage(), 0.01);
     }
 
+    @Test
+    void testYearsOfServiceIncrement() {
+        Employee emp = Employee.builder()
+                .id(5L)
+                .name("Nate")
+                .current_salary(100000)
+                .joined_Date(LocalDate.now().minusYears(3))
+                .role("Employee")
+                .project_Completion_Percentage(70.0)
+                .build();
+
+        ProcessingResponse result = service.processEmployees(List.of(emp), defaultRequest);
+
+        // 1% role + 3 years x 2% = 7% total
+        assertEquals(107000.0, result.getEmployees().get(0).getNew_Salary(), 0.01);
+        assertEquals(3, result.getEmployees().get(0).getYear_Of_Service());
+    }
+
 }
