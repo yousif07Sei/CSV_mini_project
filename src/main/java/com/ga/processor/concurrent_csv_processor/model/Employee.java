@@ -25,15 +25,15 @@ public class Employee {
 
     private String role;
 
-    private double project_Completion_percentage;
+    private double project_Completion_Percentage;
 
     private double new_Salary;
 
-    private double total_Increase_percentage;
+    private double total_Increase_Percentage;
 
-    private double year_Of_Service;
+    private int year_Of_Service;
 
-    private String increase_reason;
+    private String increase_Reason;
 
 
 
