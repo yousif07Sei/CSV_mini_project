@@ -37,4 +37,22 @@ public class SalaryProcessorServiceTest {
         assertEquals(50000, result.getEmployees().get(0).getNew_Salary());
         assertEquals(0.0, result.getEmployees().get(0).getTotal_Increase_Percentage());
     }
+
+    @Test
+    void testDirectorGets5PercentRaise() {
+        Employee emp = Employee.builder()
+                .id(2L)
+                .name("Charlie")
+                .current_salary(75000)
+                .joined_Date(LocalDate.now().minusMonths(6))
+                .role("Director")
+                .project_Completion_Percentage(70.0)
+                .build();
+
+        ProcessingResponse result = service.processEmployees(List.of(emp), defaultRequest);
+
+        assertEquals(78750.0, result.getEmployees().get(0).getNew_Salary(), 0.01);
+        assertEquals(5.0, result.getEmployees().get(0).getTotal_Increase_Percentage(), 0.01);
+    }
+
 }
