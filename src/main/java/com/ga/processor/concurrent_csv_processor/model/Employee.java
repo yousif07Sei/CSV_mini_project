@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -18,6 +20,8 @@ public class Employee {
 
 
     private double current_salary;
+
+    private LocalDate joined_Date;
 
     private String role;
 
