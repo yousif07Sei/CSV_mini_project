@@ -1,6 +1,7 @@
 package com.ga.processor.concurrent_csv_processor.service;
 
 import com.ga.processor.concurrent_csv_processor.model.Employee;
+import com.ga.processor.concurrent_csv_processor.model.Role;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvValidationException;
 import org.springframework.stereotype.Service;
@@ -59,7 +60,7 @@ public class CsvReaderService {
                         .name(line[1].trim())
                         .current_salary(Double.parseDouble(line[2].trim()))
                         .joined_Date(LocalDate.parse(line[3].trim()))
-                        .role(line[4].trim())
+                        .role(Role.valueOf(line[4].trim().toUpperCase()))
                         .project_Completion_Percentage(Double.parseDouble(line[5].trim()) * 100)
                         .build();
 
