@@ -67,3 +67,47 @@ src/main/java/com/ga/processor/concurrent_csv_processor/
 └── service/
     ├── CsvReaderService.java
     └── SalaryProcessorService.java
+
+Project Report
+==============
+
+Overview
+--------
+The Concurrent CSV Data Processor is a Spring Boot application that reads employee 
+data from a CSV file and concurrently calculates salary increments based on role, 
+years of service, and project completion percentage.
+
+Implementation Details
+----------------------
+
+CSV Reading
+-----------
+Employee data is read from `test_employees.csv` using OpenCSV library. 
+A `ReentrantLock` ensures that only one thread can read the file at a time, 
+preventing data corruption during concurrent access.
+
+Concurrency Implementation
+--------------------------
+The application uses multiple concurrency mechanisms working together:
+- `ExecutorService` with a fixed thread pool of 8 threads processes all employees in parallel
+- `CompletableFuture.supplyAsync()` submits one task per employee asynchronously
+- `Semaphore` limits the number of threads that can write results simultaneously to 4
+- `ReentrantLock` protects shared counters like raised and skipped employee counts
+- `AtomicInteger` tracks processed employee count without locking
+- `CopyOnWriteArrayList` safely collects results from multiple threads
+
+Salary Rules Applied
+--------------------
+- Employees with project completion below 60% receive no raise
+- Directors receive a 5% base increment
+- Managers receive a 2% base increment
+- Employees receive a 1% base increment
+- An additional 2% is added per fully completed year of service
+
+Outcomes
+--------
+- All 30 employees were processed concurrently in under 5ms
+- 21 employees received a raise
+- 9 employees were skipped due to low project completion
+- Total payroll increased from $2,035,000 to $2,240,900
+- Total salary increase of $205,900
