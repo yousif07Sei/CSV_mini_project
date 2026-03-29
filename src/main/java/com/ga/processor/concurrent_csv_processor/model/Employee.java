@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * Represents an employee record read from the CSV file.
+ * Contains both input fields from the CSV and output fields
+ * calculated during salary processing.
+ */
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
