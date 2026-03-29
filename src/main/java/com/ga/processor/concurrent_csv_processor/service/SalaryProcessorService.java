@@ -6,8 +6,6 @@ import com.ga.processor.concurrent_csv_processor.model.Employee;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -78,7 +76,7 @@ public class SalaryProcessorService {
             writeSemaphore.acquire();
 
 
-            if (employee.getProject_Completion_Percentage() < request.getMinCompletionThreshold()) {
+            if (!employee.isEligibleForRaise()) {
                 result.setNew_Salary(employee.getCurrent_salary());
                 result.setTotal_Increase_Percentage(0.0);
                 result.setIncrease_Reason("No raise – completion below " + request.getMinCompletionThreshold() + "%");
@@ -86,14 +84,14 @@ public class SalaryProcessorService {
             }
 
 
-            double roleIncrease = switch (employee.getRole().trim().toUpperCase()) {
-                case "DIRECTOR" -> request.getDirectorIncrease();
-                case "MANAGER"  -> request.getManagerIncrease();
+            double roleIncrease = switch (employee.getRole()) {
+                case DIRECTOR -> request.getDirectorIncrease();
+                case MANAGER  -> request.getManagerIncrease();
                 default         -> request.getEmployeeIncrease();
             };
 
 
-            int yearsWorked = Period.between(employee.getJoined_Date(), LocalDate.now()).getYears();
+            int yearsWorked = employee.getElapsedWorkYears();
             double serviceIncrease = yearsWorked * request.getYearlyIncrease();
 
             double totalIncrease = roleIncrease + serviceIncrease;
