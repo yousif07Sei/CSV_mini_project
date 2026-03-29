@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.Period;
 
 /**
  * Represents an employee record read from the CSV file.
@@ -40,6 +41,16 @@ public class Employee {
     private int year_Of_Service;
 
     private String increase_Reason;
+
+
+    public boolean isEligibleForRaise() {
+        return this.project_Completion_Percentage >= 60.0;
+    }
+
+
+    public int getElapsedWorkYears() {
+        return Period.between(this.joined_Date, LocalDate.now()).getYears();
+    }
 
 
 
