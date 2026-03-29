@@ -29,7 +29,7 @@ public class Employee {
 
     private LocalDate joined_Date;
 
-    private String role;
+    private Role role;
 
     private double project_Completion_Percentage;
 
