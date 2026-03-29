@@ -2,8 +2,10 @@ package com.ga.processor.concurrent_csv_processor;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
+@EnableAsync
 public class ConcurrentCsvProcessorApplication {
 
 	public static void main(String[] args) {
